@@ -1,3 +1,10 @@
+/*
+ * @Author: xiuquanxu
+ * @Company: kaochong
+ * @Date: 2020-01-15 23:02:39
+ * @LastEditors  : xiuquanxu
+ * @LastEditTime : 2020-01-16 19:05:28
+ */
 
 // 词法解析
 var Types = {
@@ -17,7 +24,7 @@ var parseSQL = function(query, options) {
   var i = 0, len = template.length;
   for (;i < len; i += 1) {
     var cur = template.charAt(i);
-    // var next = temp
+    // 注释
     if (cur === '/' &&  template.charAt(i + 1) === '*') {
       options.start(Types.COMMENT);
       var res = handleComment();
