@@ -21,16 +21,26 @@ parsers['delete'] = deleteToken;
 // }
 // init();
 
-exports.parse = function(sql) {
+// exports.parse = function(sql) {
+//   sql = sql.trim();
+//   var who = sql.substr(0,sql.indexOf(' ')).toLowerCase();
+//   if(parsers[who] === undefined){
+//     throw new Error("Unsupport sentence");
+//   }
+//   return  parsers[who].createObj(sql);
+// }
+
+function parse(sql) {
   sql = sql.trim();
   var who = sql.substr(0,sql.indexOf(' ')).toLowerCase();
+  console.log('-->' + who);
   if(parsers[who] === undefined){
     throw new Error("Unsupport sentence");
   }
   return  parsers[who].createObj(sql);
 }
-// var sql = 'select * from table';
-// console.log(parse(sql));
+var sql = "SELECT /*/ /** 我是注释 **/ 123, `password`, MD5(\"123456\") FROM mysql.user WHERE user=\"测试\\\"引号\" AND host!='%";
+console.log(JSON.stringify(parse(sql)));
 exports.RELATE = Tool.RELATE;
 exports.JOIN = Tool.JOIN;
 exports.ORDER = Tool.ORDER;

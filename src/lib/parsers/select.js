@@ -7,7 +7,7 @@
 var Lexter = require('../lexter.js');
 var Tool   = require('../sqlParseTool.js');
 var util   = require('util');
-
+var tag = 'select';
 /*{{{ divideUnion()*/
 /**
  * 根据union划分tokens
@@ -410,14 +410,15 @@ exports.createObj= function(sql){
 
   var result = [];
 
-  var tokens      = Lexter.create(sql).getAll();
+  var tokens = Lexter.create(sql).getAll();
+  console.log(tag,' createObj:', tokens);
   var tokenGroups = divideUnion(tokens);
-
+  console.log(tag, ' tokenGroups:', tokenGroups);
 
   for(var i = 0;i < tokenGroups.length; i++){
     var res = {};
     var parts = divideTokens(tokenGroups[i]);
-
+    console.log(tag, 'parts:', parts);
     var hint = Tool.getHint(parts['column'],1);
     if(hint){res.hint = hint;}
     if(parts["column"]){res.column   = parseColumn(parts["column"]);}
@@ -429,7 +430,7 @@ exports.createObj= function(sql){
     if(parts["limit"]){res.limit = parseLimit(parts["limit"]);}
     result.push(res);
   }
-
+  console.log(tag, 'result:', result);
   return result;
 
 }

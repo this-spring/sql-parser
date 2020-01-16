@@ -1,0 +1,62 @@
+[
+    {
+        "column": {
+            "n": {
+                "dist": null,
+                "expr": [
+                    {
+                        "text": "name",
+                        "type": 1
+                    }
+                ]
+            },
+            "a": {
+                "dist": null,
+                "expr": [
+                    {
+                        "text": "age",
+                        "type": 1
+                    }
+                ]
+            }
+        },
+        "source": {
+            "table": {
+                "type": "",
+                "source": "table"
+            }
+        },
+        "where": [
+            {
+                "column": {
+                    "text": "id",
+                    "type": 1
+                },
+                "relate": 1,
+                "values": [
+                    [
+                        {
+                            "text": 100,
+                            "type": 2
+                        }
+                    ]
+                ]
+            },
+            {
+                "column": {
+                    "text": "count",
+                    "type": 1
+                },
+                "relate": 1,
+                "values": [
+                    [
+                        {
+                            "text": 1,
+                            "type": 2
+                        }
+                    ]
+                ]
+            }
+        ]
+    }
+]

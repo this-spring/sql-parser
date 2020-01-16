@@ -7,7 +7,7 @@
 // +------------------------------------------------------------------------+
 // | 2011年10月                                                             |
 // +------------------------------------------------------------------------+
-
+var tag = 'lexter';
 var Types   = {
   UNKNOWN     : 0,				/**<    未知的 */
   KEYWORD     : 1,				/**<    关键字 */
@@ -25,6 +25,7 @@ var Types   = {
 }
 
 var Parser  = function(query) {
+  console.log(tag, ' Parser:', query);
   var tks = [], pre = Types.UNKNOWN;
   var tmp = '', cur = '', sub = '', nxt = '';
 
@@ -169,6 +170,7 @@ var Parser  = function(query) {
 /* {{{ public construct() */
 var Lexter  = function(query) {
   this.tokens = (query instanceof Array) ? query : Parser(query.toString());
+  console.log(tag, this.tokens);
   this.blocks = [];
 
   var express = 0;
@@ -187,6 +189,22 @@ var Lexter  = function(query) {
   }
 }
 /* }}} */
+// var Types   = {
+//   UNKNOWN     : 0,				/**<    未知的 */
+//   KEYWORD     : 1,				/**<    关键字 */
+//   NUMBER      : 2,				/**<    数  字 */
+//   STRING      : 3,				/**<    字符串 */
+//   FUNCTION    : 4,				/**<    函数名 */
+//   VARIABLE    : 5,				/**<    变  量 */
+//   PARAMS      : 6,                /**<    绑定值 */
+//   OPERATOR    : 7,				/**<    运算符 */
+//   COMMAS      : 8,				/**<    标  点 */
+//   MEMORY		  : 9,
+
+//   COMMENT     : 99,       /**<    注  释 */
+
+// }
+
 
 /* {{{ public getAll() */
 Lexter.prototype.getAll     = function() {
