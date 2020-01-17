@@ -61,12 +61,14 @@ var Parser  = function(query) {
     else if ("'" == cur || '"' == cur || '`' == cur) {
       tmp = '';
       while (i < query.length && cur != (sub = query.charAt(++i))) {
+        console.log(sub);
         tmp += ("\\" == sub) ? query.charAt(++i) : sub;
       }
       tks[tks.length] = {
         'text'  : tmp,
         'type'  : ('`' == cur) ? Types.VARIABLE : Types.STRING,
       };
+      console.log('after parse string:', temp)
     }
     /* }}} */
 
@@ -166,7 +168,8 @@ var Parser  = function(query) {
 
   return tks;
 }
-
+const template = "SELECT /*/ /** 我是注释 **/ 123, /** 456 **/`password`, MD5(\"123456\") FROM mysql.user WHERE user="测"引号\" AND host!='%'";
+Parser(template);
 /* {{{ public construct() */
 var Lexter  = function(query) {
   this.tokens = (query instanceof Array) ? query : Parser(query.toString());
