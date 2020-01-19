@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-01-15 23:02:39
  * @LastEditors  : xiuquanxu
- * @LastEditTime : 2020-01-19 14:13:04
+ * @LastEditTime : 2020-01-19 14:30:57
  */
 
 // 词法解析
@@ -32,6 +32,7 @@ var parseSQL = function(query, options) {
   var i = 0, len = template.length, token = '';
   for (;i < len; i += 1) {
     var cur = template.charAt(i);
+    token = '';
     // 注释
     if (cur === '/' &&  template.charAt(i + 1) === '*') {
       options.start(Types.COMMENT);
@@ -56,20 +57,19 @@ var parseSQL = function(query, options) {
       var res = handleKeyWord();
       token = options.end(Types.KEYWORD, res);
     }
-    // 变量: select name, age from person, 变量是name和age
+    // 数字
+    else if (('-' === cur && Types.VARIABLE != pre) || (/\d+/.test(cur))) {
+      options.start(Types.NUMBER);
+      var res = handleNumber();
+      token = options.end(Types.NUMBER, res);
+    }
     // 运算符
     else if (/^(\+|\-|\*|\/|>|<|=|!)$/.test(cur)) {
       options.start(Types.OPERATOR);
       var res = handleOperator();
       token = options.end(Types.OPERATOR, res);
     }
-    // 数字
-    else if (/\d+/.test(cur)) {
-      options.start(Types.NUMBER);
-      var res = handleNumber();
-      token = options.end(Types.NUMBER, res);
-    }
-    pre = token;
+    if (token) pre = token;
   }
   options.allEnd();
   // 函数名
@@ -103,7 +103,7 @@ var parseSQL = function(query, options) {
   // 运算符
   function handleOperator() {
     let res = cur;
-    while(i < template.length && /^(\+|\-|\*|\/|>|<|=|!)$/.test(template.charAt(i + 1))) {
+    while(i < template.length && /^(\+|\*|\/|>|<|=|!)$/.test(template.charAt(i + 1))) {
       res += template.charAt(i + 1);
       i ++;
     }
@@ -152,7 +152,7 @@ var parseSQL = function(query, options) {
 }
 
 // const template = "SELECT /*/ /** 我是注释 **/ 123, /** 456 **/`password`, MD5(\"123456\") FROM mysql.user WHERE user="测"引号\" AND host!='%'";
-const template = `select * /**  这是一个注释 **/ from table where name='xxq' and age >= '21' and year=100`;
+const template = `select * /**  这是一个注释 **/ from table where name='xxq' and age >= '21' and year=-100`;
 var tokens = [];
 var tokenKey = {
   type: Types.UNKNOWN,
