@@ -68,7 +68,7 @@ var Parser  = function(query) {
         'text'  : tmp,
         'type'  : ('`' == cur) ? Types.VARIABLE : Types.STRING,
       };
-      console.log('after parse string:', temp)
+      // console.log('after parse string:', temp)
     }
     /* }}} */
 
@@ -168,7 +168,7 @@ var Parser  = function(query) {
 
   return tks;
 }
-const template = "SELECT /*/ /** 我是注释 **/ 123, /** 456 **/`password`, MD5(\"123456\") FROM mysql.user WHERE user="测"引号\" AND host!='%'";
+var template = "SELECT /*/ /** 我是注释 **/ 123, /** 456 **/`password`, MD5(\"123456\") FROM mysql.user WHERE host!='%'";
 Parser(template);
 /* {{{ public construct() */
 var Lexter  = function(query) {

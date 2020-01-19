@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-01-15 23:02:39
  * @LastEditors  : xiuquanxu
- * @LastEditTime : 2020-01-17 17:19:25
+ * @LastEditTime : 2020-01-19 14:13:04
  */
 
 // 词法解析
@@ -64,9 +64,11 @@ var parseSQL = function(query, options) {
       token = options.end(Types.OPERATOR, res);
     }
     // 数字
-    // else if (('-' === cur && pre .type!== )) {
-
-    // }
+    else if (/\d+/.test(cur)) {
+      options.start(Types.NUMBER);
+      var res = handleNumber();
+      token = options.end(Types.NUMBER, res);
+    }
     pre = token;
   }
   options.allEnd();
@@ -77,6 +79,7 @@ var parseSQL = function(query, options) {
       i ++;
       sub = template.charAt(i);
       if (!(/^[\w\.:]+$/i.test(sub))) {
+        i --;
         break;
       }
       res += sub;
@@ -85,7 +88,17 @@ var parseSQL = function(query, options) {
   }
   // 数字
   function handleNumber() {
-
+    let sub = '', res = template.charAt(i);
+    while(i < template.length) {
+      i ++
+      sub = template.charAt(i);
+      if (!(/^[\d\.]+$/.test(sub))) {
+        break;
+      }
+      res += sub;
+    }
+    i --;
+    return res;
   }
   // 运算符
   function handleOperator() {
@@ -139,7 +152,7 @@ var parseSQL = function(query, options) {
 }
 
 // const template = "SELECT /*/ /** 我是注释 **/ 123, /** 456 **/`password`, MD5(\"123456\") FROM mysql.user WHERE user="测"引号\" AND host!='%'";
-const template = `select * /**  这是一个注释 **/ from table where name='xxq' and age >= '21'`;
+const template = `select * /**  这是一个注释 **/ from table where name='xxq' and age >= '21' and year=100`;
 var tokens = [];
 var tokenKey = {
   type: Types.UNKNOWN,

@@ -2,8 +2,8 @@
  * @Author: xiuquanxu
  * @Company: kaochong
  * @Date: 2020-01-15 01:13:11
- * @LastEditors: xiuquanxu
- * @LastEditTime: 2020-01-17 15:55:34
+ * @LastEditors  : xiuquanxu
+ * @LastEditTime : 2020-01-19 13:48:13
  */
 var Tool = require('./sqlParseTool.js');
 var Lexter = require('./lexter.js');
@@ -46,8 +46,8 @@ function parse(sql) {
   }
   return  parsers[who].createObj(sql);
 }
-// var sql = "SELECT /*/ /** 我是注释 **/ 123, `password`, MD5(\"123456\") FROM mysql.user WHERE user=\"测试\\\"引号\" AND host!='%";
-const sql = `select * /**  这是一个注释 **/ from table where name='xxq' and age='21'`;
+var sql = "SELECT /*/ /** 我是注释 **/ 123, `password`, MD5(\"123456\") FROM mysql.user WHERE user=\"测试\\\"引号\" AND host!='%";
+// var sql = 'select * /**  这是一个注释 **/ from table where name='xxq' and age='21'';
 console.log(JSON.stringify(parse(sql)));
 exports.RELATE = Tool.RELATE;
 exports.JOIN = Tool.JOIN;
