@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-01-15 01:13:11
  * @LastEditors  : xiuquanxu
- * @LastEditTime : 2020-01-19 14:17:05
+ * @LastEditTime : 2020-01-21 14:34:59
  */
 var Tool = require('./sqlParseTool.js');
 var Lexter = require('./lexter.js');
@@ -48,7 +48,7 @@ function parse(sql) {
 }
 // var sql = "SELECT /*/ /** 我是注释 **/ 123, `password`, MD5(\"123456\") FROM mysql.user WHERE user=\"测试\\\"引号\" AND host!='%";
 // var sql = 'select * /**  这是一个注释 **/ from table where name='xxq' and age='21'';
-var sql = "select * /**  这是一个注释 **/ from table where name='xxq' and age >= '21' and year=-100";
+var sql = "select * /** () 这是一个注释 **/ from table where (name='xxq') and age >= '21' and year=-100";
 
 console.log(JSON.stringify(parse(sql)));
 exports.RELATE = Tool.RELATE;

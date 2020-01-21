@@ -190,6 +190,7 @@ var Lexter  = function(query) {
       this.blocks[this.blocks.length] = i;
     }
   }
+  console.log(tag, ' blocks:', this.blocks);
 }
 /* }}} */
 // var Types   = {

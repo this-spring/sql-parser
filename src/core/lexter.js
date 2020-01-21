@@ -3,7 +3,7 @@
  * @Company: kaochong
  * @Date: 2020-01-15 23:02:39
  * @LastEditors  : xiuquanxu
- * @LastEditTime : 2020-01-19 14:30:57
+ * @LastEditTime : 2020-01-21 22:09:49
  */
 
 // 词法解析
@@ -21,10 +21,7 @@ var Types = {
 
   COMMENT: 99, // 注释
 }
-// var 
 
-// 			"SELECT /*/ /** 我是注释 **/ 123, `password`, MD5(\"123456\") FROM mysql.user WHERE user=\"测试\\\"引号\" AND host!='%'"
-// /***fsdfsafsadfsf */
 var parseSQL = function(query, options) {
   var template =  query;
   console.log('start parseSQL:', template);
@@ -151,30 +148,50 @@ var parseSQL = function(query, options) {
 
 }
 
-// const template = "SELECT /*/ /** 我是注释 **/ 123, /** 456 **/`password`, MD5(\"123456\") FROM mysql.user WHERE user="测"引号\" AND host!='%'";
-const template = `select * /**  这是一个注释 **/ from table where name='xxq' and age >= '21' and year=-100`;
-var tokens = [];
-var tokenKey = {
-  type: Types.UNKNOWN,
-  text: '',
-};
-var createTokenTemplate = function(type, text) {
+var Lexter = function(template) {
+  this.tokens = [];
+  this.tokenKey = {
+    type: Types.UNKNOWN,
+    text: '',
+  };
+  var self = this;
+  parseSQL(template, {
+    // 钩子
+    start(type) {
+      console.log(`start  type:${type}`);
+    },
+    end(type, res) {
+      var token = self.createTokenTemplate(type, res);
+      self.tokens.push(token);
+      console.log(`end res:${res}`);
+    },
+    allEnd() {
+      console.log(`\nallend allRes: \n`, self.tokens)
+    }
+  });
+}
+
+Lexter.prototype.createTokenTemplate = function(type, text) {
   return {
     type,
     text,
   }
-}
-parseSQL(template, {
-  // 钩子
-  start(type) {
-    console.log(`start  type:${type}`);
-  },
-  end(type, res) {
-    var token = createTokenTemplate(type, res);
-    tokens.push(token);
-    console.log(`end res:${res}`);
-  },
-  allEnd() {
-    console.log(`\nallend allRes: \n`, tokens)
-  }
-});
+};
+
+Lexter.prototype.getAll = function() {
+  return this.tokens;
+};
+
+Lexter.prototype.indexOf = function() {
+
+};
+
+// exports.create = function(template) {
+//   return new Lexter(template);
+// }
+// test
+// const template = "SELECT /*/ /** 我是注释 **/ 123, /** 456 **/`password`, MD5(\"123456\") FROM mysql.user WHERE user="测"引号\" AND host!='%'";
+const template = `select * /**  这是一个注释 **/ from table where name='xxq' and age >= '21' and year=-100`;
+
+var lt = new Lexter(template);
+console.log(lt.getAll());
